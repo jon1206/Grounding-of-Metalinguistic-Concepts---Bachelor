@@ -62,22 +62,22 @@ extract_encoders.py   ("The {} is" /
 
 ## Data
 
-- `Results/` — one JSON per (vocabulary, method, model, language) run,
-  including per-fold P@k values. Every number in Tables 2–5 can be
-  recomputed from these files.
-- `metalinguistic_en.txt` / `metalinguistic_da.txt` — final vocabularies
-  (138 / 122 terms; also printed in Appendix A of the thesis).
-- `metalinguistic_qids.json`, `extra_metalinguistic_qids.json`,
-  `metalinguistic_all_qids.json` — the manually verified term-to-QID
-  mappings (§4.4); `metalinguistic_en_to_da.json` — the QID-mediated
-  English-to-Danish translations.
-- `en_138.txt`, `da_122.txt` — size-matched control word lists
+- `Results.zip` — one JSON per (vocabulary, method, model, language) run,
+  including per-fold P@k values. Every number in Tables 2-5 of the thesis
+  can be recomputed from these files.
+- `Data/metalinguistic_en.txt` / `Data/metalinguistic_da.txt` — final
+  vocabularies (138 / 122 terms; also printed in Appendix A of the thesis).
+- `Data/metalinguistic_all_qids.json` — the manually verified term-to-QID
+  mapping (Section 4.4). This is the merged version of the two partial
+  input files read by `build_meta_reference_en.py`.
+- `Data/metalinguistic_en_to_da.json` — the QID-mediated English-to-Danish
+  translations produced by `translate_meta_vocab_da.py`.
+- `Data/en_138.txt`, `Data/da_122.txt` — size-matched control word lists
   (top-138 / top-122 high-frequency words; the English list was
   constructed manually).
-- `danish_20k.txt` — Danish general vocabulary. The English general
-  vocabulary is the first20hours 20k list:
-  https://github.com/first20hours/google-10000-english/blob/master/20k.txt
-- `*.pt` reference embeddings — `biggraph_metalinguistic_en.pt`,
+- `Data/danish_20k.txt` — Danish general vocabulary; `Data/20k.txt` —
+  English general vocabulary (source: first20hours/google-10000-english).
+- `Data/*.pt` reference embeddings — `biggraph_metalinguistic_en.pt`,
   `biggraph_metalinguistic_da.pt`, `biggraph_control_en138.pt`,
   `biggraph_control_da122.pt`, `biggraph_danish_embeddings.pt`,
   `biggraph_embeddings.pt` (English general).
@@ -87,11 +87,11 @@ extract_encoders.py   ("The {} is" /
 ```bash
 # English metalinguistic, GPT-2 large -> Table 2 (meta) / Table 5 (cosine)
 python extract_gpt2_en.py --model gpt2-large \
-    --wordlist metalinguistic_en.txt --output gpt2_large_meta.pt
+    --wordlist Data/metalinguistic_en.txt --output gpt2_large_meta.pt
 python procrustes_cv.py --lm gpt2_large_meta.pt \
-    --ref biggraph_metalinguistic_en.pt --output out_cv.json --folds 5
+    --ref Data/biggraph_metalinguistic_en.pt --output out_cv.json --folds 5
 python rsa.py --lm gpt2_large_meta.pt \
-    --ref biggraph_metalinguistic_en.pt --output out_rsa.json
+    --ref Data/biggraph_metalinguistic_en.pt --output out_rsa.json
 ```
 
 ## Not included
@@ -105,21 +105,10 @@ python rsa.py --lm gpt2_large_meta.pt \
   `distilbert-base-multilingual-cased`, `xlm-roberta-base`,
   `xlm-roberta-large`).
 
-## Requirements
-
-```
-torch
-transformers
-numpy
-scipy
-scikit-learn
-wordfreq
-requests
-matplotlib
-```
-
 ## Notes
 
+- Dependencies: `torch`, `transformers`, `numpy`, `scipy`, `scikit-learn`,
+  `wordfreq`, `requests`.
 - `torch.load(..., weights_only=False)` is used to read the bundled `.pt`
   files; only load `.pt` files from trusted sources.
 - Random seed is fixed (42) in `procrustes_cv.py`, so fold assignment is
