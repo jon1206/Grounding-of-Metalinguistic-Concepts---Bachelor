@@ -41,6 +41,11 @@ extract_encoders.py   ("The {} is" /
 - `build_general_vocab_da.py` — top-20,000 Danish words via `wordfreq`.
 - `build_general_reference_da.py` — matches the Danish list against
   BigGraph `@da` labels (single words; collisions resolved by first match).
+- `build_general_reference_en.py` — **reconstruction** of the English
+  label-matching script (the original was not preserved): identical logic
+  to the Danish version, with `@en` labels and the English 20k list. The
+  original script's output, `biggraph_embeddings.pt`, is included and can
+  be used to verify the reconstruction (see the script's docstring).
 - `build_control_references.py` — slices the size-matched control word
   lists (top-138 EN / top-122 DA high-frequency words) out of the BigGraph
   reference embeddings.
@@ -66,7 +71,9 @@ extract_encoders.py   ("The {} is" /
   `metalinguistic_all_qids.json` — the manually verified term-to-QID
   mappings (§4.4); `metalinguistic_en_to_da.json` — the QID-mediated
   English-to-Danish translations.
-- `en_138.txt`, `da_122.txt` — size-matched control word lists.
+- `en_138.txt`, `da_122.txt` — size-matched control word lists
+  (top-138 / top-122 high-frequency words; the English list was
+  constructed manually).
 - `danish_20k.txt` — Danish general vocabulary. The English general
   vocabulary is the first20hours 20k list:
   https://github.com/first20hours/google-10000-english/blob/master/20k.txt
@@ -97,12 +104,9 @@ python rsa.py --lm gpt2_large_meta.pt \
   `KennethTM/gpt2-medium-danish`, `bert-base-multilingual-cased`,
   `distilbert-base-multilingual-cased`, `xlm-roberta-base`,
   `xlm-roberta-large`).
-- **Three small scripts that were not preserved:** the English
-  label-matching script (analogous to `build_general_reference_da.py`; its
-  output `biggraph_embeddings.pt` is included), the construction of
-  `en_138.txt` (the first 138 words of the English frequency list), and
-  the final figure-plotting scripts. Their behavior is described in
-  Sections 3.2 and 4.4 of the thesis.
+- **The final figure-plotting scripts** were not preserved
+  (`plot_results_overview.py` is an earlier version); the underlying
+  numbers are all in `Results/`.
 
 ## Requirements
 
