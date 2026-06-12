@@ -104,9 +104,6 @@ python rsa.py --lm gpt2_large_meta.pt \
   `KennethTM/gpt2-medium-danish`, `bert-base-multilingual-cased`,
   `distilbert-base-multilingual-cased`, `xlm-roberta-base`,
   `xlm-roberta-large`).
-- **The final figure-plotting scripts** were not preserved
-  (`plot_results_overview.py` is an earlier version); the underlying
-  numbers are all in `Results/`.
 
 ## Requirements
 
